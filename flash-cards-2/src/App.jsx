@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import FlashcardList from "./components/FlashcardList.jsx";
 
@@ -16,12 +16,33 @@ const cards = [
 ];
 
 const App = () => {
+  const [currentStreak, setCurrentStreak] = useState(0);
+  const [longestStreak, setLongestStreak] = useState(0);
+
+  const updateStreaks = (isCorrect) => {
+    if (isCorrect) {
+      setCurrentStreak((prev) => {
+        const newStreak = prev + 1;
+        if (newStreak > longestStreak) {
+          setLongestStreak(newStreak);
+        }
+        return newStreak;
+      });
+    } else {
+      setCurrentStreak(0);
+    }
+  };
+
   return (
     <div className="App">
-      <h2>Discrete Math Quiz</h2>
-      <h4>Attempt this challenging quiz to test your knowledge on Discrete Mathematics</h4>
-      <h5>Number of cards: 10</h5>
-      <FlashcardList cards={cards} />
+      <h1>Discrete Math Quiz</h1>
+      <h3>Attempt this challenging quiz to test your knowledge on Discrete Mathematics</h3>
+      <p>Number of cards: {cards.length}</p>
+      <div className="streak-container">
+        <p>Current Streak: {currentStreak}</p>
+        <p>Longest Streak: {longestStreak}</p>
+      </div>
+      <FlashcardList cards={cards} updateStreaks={updateStreaks} />
     </div>
   );
 };

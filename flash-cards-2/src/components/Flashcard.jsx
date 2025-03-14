@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from './Button.jsx';
 
-const Flashcard = ({ card }) => {
+const Flashcard = ({ card, updateStreaks }) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [userGuess, setUserGuess] = useState('');
   const [feedback, setFeedback] = useState('');
@@ -11,11 +11,9 @@ const Flashcard = ({ card }) => {
   }
 
   function handleSubmit() {
-    if (card.answer.toLowerCase().trim() === userGuess.toLowerCase().trim()) {
-      setFeedback('Correct!');
-    } else {
-      setFeedback('Incorrect!');
-    }
+    const isCorrect = card.answer.toLowerCase().trim() === userGuess.toLowerCase().trim();
+    setFeedback(isCorrect ? 'Correct!' : 'Incorrect!');
+    updateStreaks(isCorrect);
   }
 
   function getCardColorClass(difficulty) {

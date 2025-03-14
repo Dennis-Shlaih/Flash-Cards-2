@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Flashcard from './Flashcard.jsx';
 import Button from './Button.jsx';
 
-const FlashcardList = ({ cards }) => {
+const FlashcardList = ({ cards, updateStreaks }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   function handleNextClick() {
@@ -26,7 +26,7 @@ const FlashcardList = ({ cards }) => {
 
   return (
     <div className="flashcard-container">
-      <Flashcard card={cards[currentIndex]} />
+      <Flashcard card={cards[currentIndex]} updateStreaks={updateStreaks} />
       <div className="button-container">
         <Button onClick={handlePrevClick} text="Back" />
         <Button onClick={handleNextClick} text="Next" />
