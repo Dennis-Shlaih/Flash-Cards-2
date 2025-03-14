@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
+import Button from './Button.jsx';
 
-const Flashcard = (props) => {
+const Flashcard = ({ card }) => {
   const [showAnswer, setShowAnswer] = useState(false);
+  const [userGuess, setUserGuess] = useState('');
+  const [feedback, setFeedback] = useState('');
 
   function handleCardClick() {
     setShowAnswer(!showAnswer);
+  }
+
+  function handleSubmit() {
+    if (card.answer.toLowerCase().trim() === userGuess.toLowerCase().trim()) {
+      setFeedback('Correct!');
+    } else {
+      setFeedback('Incorrect!');
+    }
   }
 
   function getCardColorClass(difficulty) {
@@ -21,13 +32,23 @@ const Flashcard = (props) => {
   }
 
   return (
-    <div onClick={handleCardClick} className={`flashcard ${showAnswer ? 'flipped' : ''} ${getCardColorClass(props.card.difficulty)}`}>
-      <div className="flashcard-inner">
-        <div className="flashcard-front">
-          {props.card.question}
+    <div className="flashcard-container">
+      {feedback && <p className="feedback-message">{feedback}</p>}
+      <div className={`flashcard ${showAnswer ? 'flipped' : ''} ${getCardColorClass(card.difficulty)}`}>
+        <div className="flashcard-inner" onClick={handleCardClick}>
+          <div className="flashcard-front">{card.question}</div>
+          <div className="flashcard-back">{card.answer}</div>
         </div>
-        <div className="flashcard-back">
-          {props.card.answer}
+      </div>
+      <div className="input-section">
+        <div className="input-wrapper">
+          <input
+            type="text"
+            value={userGuess}
+            onChange={(e) => setUserGuess(e.target.value)}
+            placeholder="Enter your guess"
+          />
+          <Button onClick={handleSubmit} text="Submit" />
         </div>
       </div>
     </div>
